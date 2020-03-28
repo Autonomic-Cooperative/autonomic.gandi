@@ -2,7 +2,29 @@
 
 [![Build Status](https://drone.autonomic.zone/api/badges/autonomic-cooperative/autonomic.gandi/status.svg)](https://drone.autonomic.zone/autonomic-cooperative/autonomic.gandi)
 
-Ansible libraries for manging Gandi resources.
+Ansible libraries for managing Gandi resources.
+
+## Example
+
+```yaml
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Create foobar.autonomic.zone
+      gandi_dns:
+        rest_api_key: "{{ lookup('env', 'LEXICON_GANDI_AUTH_TOKEN') }}"
+        domain: foobar.autonomic.zone
+        ipv4: 94.130.105.60
+        state: present
+```
+
+## Features
+
+- [x] Create a new DNS entry
+- [x] Delete an existing DNS entry
+- [ ] Update an existing DNS entry
 
 ## Requirements
 
@@ -44,25 +66,3 @@ Include an entry in your `requirements.yml` like so.
 See the [releases](https://git.autonomic.zone/autonomic-cooperative/autonomic.gandi/releases) for which is the latest version.
 
 Then make sure to download the role with `ansible-galaxy install -r requirements.yml`.
-
-## Example
-
-```yaml
----
-- hosts: localhost
-  gather_facts: false
-  connection: local
-  tasks:
-    - name: Create foobar.autonomic.zone
-      gandi_dns:
-        rest_api_key: "{{ lookup('env', 'LEXICON_GANDI_AUTH_TOKEN') }}"
-        domain: foobar.autonomic.zone
-        ipv4: 94.130.105.60
-        state: present
-```
-
-## Features
-
-- [x] Create a new DNS entry
-- [x] Delete an existing DNS entry
-- [ ] Update an existing DNS entry
