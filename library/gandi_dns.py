@@ -17,9 +17,9 @@ author:
 options:
   apirest_key:
     description:
-      - The Gandi REST API key. It may also be specified by the
-        C(API_REST_KEY) environment variable. See the
-        U(https://github.com/Gandi/gandi.cli/blob/master/gandicli.man.rst#environment)
+      - The Gandi REST API key. It may also be specified by the C(APIREST_KEY)
+        environment variable. See U(https://github.com/Gandi/gandi.cli/blob/master/gandicli.man.rst#environment)
+        for more.
     type: str
     required: true
   domain:
@@ -38,7 +38,7 @@ options:
         - present
         - absent
     required: true
-"""
+"""  # noqa
 
 EXAMPLES = """
 - name: Create a new Gandi DNS entry
@@ -65,7 +65,7 @@ except ImportError:
 
 def retrieve_domain(domain):
     """Retrieve information about an existing domain."""
-    pass
+    output = subprocess.check_output(["gandi", ""])
 
 
 def main():
