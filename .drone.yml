@@ -1,0 +1,24 @@
+---
+kind: pipeline
+
+name: default
+
+matrix:
+  include:
+    - python: 3.8
+      env: TOXENV=py38
+    - python: 3.8
+      env: TOXENV=lint
+    - python: 3.8
+      env: TOXENV=sort
+    - python: 3.8
+      env: TOXENV=format
+    - python: 3.8
+      env: TOXENV=type
+
+steps:
+  - name: Tox matrix testing
+    image: python:3.8.2-buster
+    commands:
+      - pip install tox==3.14.6
+      - tox

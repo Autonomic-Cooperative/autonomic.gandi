@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+from ansible.module_utils.basic import AnsibleModule
+
 DOCUMENTATION = """
 ---
 module: gandi_dns
@@ -13,8 +15,6 @@ EXAMPLES = """
     domain: foobar.autonomic.zone
     ipv4: 192.168.1.2
 """
-
-from ansible.module_utils.basic import AnsibleModule
 
 
 def main():
