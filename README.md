@@ -4,6 +4,17 @@
 
 Ansible libraries for manging Gandi resources.
 
+## Requirements
+
+- [Ansible >= 2.9.6](https://pypi.org/project/ansible/)
+- [Gandi.cli >= 1.5](https://pypi.org/project/gandi.cli/)
+
+```bash
+$ pip install ansible==2.6.9 gandi.cli==1.5
+```
+
+These should be present on the localhost where you run Ansible.
+
 ## Usage
 
 Include an entry in your `requirements.yml` like so.
