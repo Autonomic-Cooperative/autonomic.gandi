@@ -1,8 +1,0 @@
----
-- hosts: localhost
-  tasks:
-    - name: Create foobar.autonomic.zone
-      gandi_dns:
-        apirest_key: "{{ apirest_key }}"
-        domain: foobar.autonomic.zone
-        ipv4: 192.168.1.2
