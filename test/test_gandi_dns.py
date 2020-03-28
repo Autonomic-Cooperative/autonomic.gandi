@@ -1,6 +1,6 @@
 import pytest
 
-gandi_cli = pytest.importorskip('gandi.cli')
+gandi_cli = pytest.importorskip('lexicon')
 
 
 def test_TODO():
