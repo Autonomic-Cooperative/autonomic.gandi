@@ -50,7 +50,7 @@ export LEXICON_GANDI_API_PROTOCOL="rest"
 You can test that everything is working by running the following.
 
 ```bash
-$ lexicon gandi list autonomic.zone
+$ lexicon gandi list autonomic.zone A
 ```
 
 ## Usage
