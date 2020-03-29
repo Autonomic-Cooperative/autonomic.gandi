@@ -14,7 +14,7 @@ Ansible libraries for managing Gandi resources.
   tasks:
     - name: Create foobar.autonomic.zone
       gandi_dns:
-        rest_api_key: "{{ lookup('env', 'LEXICON_GANDI_AUTH_TOKEN') }}"
+        gandi_rest_token: abc...
         domain: foobar.autonomic.zone
         ipv4: 94.130.105.60
         state: present

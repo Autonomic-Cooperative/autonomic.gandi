@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import json
+import os
 import traceback
 from subprocess import CalledProcessError, check_output
 
@@ -28,13 +29,13 @@ options:
     description: The IP v4 address that the domain refers to.
     type: str
     required: true
-  rest_api_key:
+  gandi_rest_token:
     description:
       - The Gandi REST API key. It may also be specified by the C(LEXICON_GANDI_AUTH_TOKEN)
         environment variable. See U(https://github.com/AnalogJ/lexicon/blob/ce168132880558415c8c755e65f8e2f9b46cff62/lexicon/providers/gandi.py).
         for more.
     type: str
-    required: true
+    required: false
   state:
     description:
       - The desired instance state.
@@ -48,7 +49,6 @@ options:
 EXAMPLES = """
 - name: Create a new Gandi DNS entry
   gandi_dns:
-    rest_api_key: "{{ lookup('env', 'LEXICON_GANDI_AUTH_TOKEN') }}"
     domain: foobar.autonomic.zone
     ipv4: 192.168.1.2
     state: present
@@ -64,30 +64,46 @@ except ImportError:
     HAS_DNS_LEXICON_DEPENDENCY = False
 
 
+def error_msg(domain):
+    """Better error message since check_output output is not helpful."""
+    return (
+        "Unable to retrieve domain info. Did you export "
+        "the LEXICON_GANDI_AUTH_TOKEN environment variable? "
+        "Does running the following command work? lexicon "
+        "gandi list {domain} A"
+    ).format(domain=domain)
+
+
+def get_env():
+    """Build environment for running command-line commands."""
+    env = os.environ.copy()
+    env["PROVIDER"] = "gandi"
+    env["LEXICON_GANDI_API_PROTOCOL"] = "rest"
+    return env
+
+
 def retrieve_domain_info(module):
     """Retrieve all information about a specific domain."""
+    domain = module.params["domain"]
+    env = get_env()
+
     try:
         return json.loads(
             check_output(
-                [
-                    "lexicon",
-                    "gandi",
-                    "list",
-                    module.params["domain"],
-                    "A",
-                    "--output",
-                    "JSON",
-                ]
+                ["lexicon", "gandi", "list", domain, "A", "--output", "JSON"],
+                env=env,
             )
         )
-    except CalledProcessError as exception:
-        module.fail_json(
-            msg="Unable to retrieve domain info. Saw: %s" % str(exception)
-        )
+    except CalledProcessError:
+        module.fail_json(msg=error_msg(domain))
 
 
 def create_domain(module):
     """Create a new DNS entry."""
+    domain = module.params["domain"]
+    ipv4 = module.params["ipv4"]
+    env = get_env()
+
     try:
         return json.loads(
             check_output(
@@ -95,25 +111,28 @@ def create_domain(module):
                     "lexicon",
                     "gandi",
                     "create",
-                    module.params["domain"],
+                    domain,
                     "A",
                     "--name",
-                    module.params["domain"],
+                    domain,
                     "--content",
-                    module.params["ipv4"],
+                    ipv4,
                     "--output",
                     "JSON",
-                ]
+                ],
+                env=env,
             )
         )
-    except Exception as exception:
-        module.fail_json(
-            msg="Unable to create domain entry. Saw: %s" % str(exception)
-        )
+    except Exception:
+        module.fail_json(msg=error_msg(domain))
 
 
 def delete_domain(module):
     """Delete an existing DNS entry."""
+    domain = module.params["domain"]
+    ipv4 = module.params["ipv4"]
+    env = get_env()
+
     try:
         return json.loads(
             check_output(
@@ -121,59 +140,58 @@ def delete_domain(module):
                     "lexicon",
                     "gandi",
                     "delete",
-                    module.params["domain"],
+                    domain,
                     "A",
                     "--name",
-                    module.params["domain"],
+                    domain,
                     "--content",
-                    module.params["ipv4"],
+                    ipv4,
                     "--output",
                     "JSON",
-                ]
+                ],
+                env=env,
             )
         )
-    except Exception as exception:
-        module.fail_json(
-            msg="Unable to delete domain entry. Saw: %s" % str(exception)
-        )
+    except Exception:
+        module.fail_json(msg=error_msg(domain))
 
 
 def main():
     """Module entrypoint."""
     module = AnsibleModule(
         argument_spec=dict(
-            domain=dict(type='str', required=True),
-            ipv4=dict(type='str', required=True),
+            domain=dict(type="str", required=True),
+            ipv4=dict(type="str", required=True),
             state=dict(
-                type='str', required=True, choices=['present', 'absent']
+                type="str", required=True, choices=["present", "absent"]
             ),
-            rest_api_key=dict(
-                type='str',
-                required=True,
+            gandi_rest_token=dict(
+                type="str",
+                required=False,
                 no_log=True,
-                fallback=(env_fallback, ['LEXICON_GANDI_AUTH_TOKEN']),
+                fallback=(env_fallback, ["LEXICON_GANDI_AUTH_TOKEN"]),
             ),
         ),
         supports_check_mode=False,
-        required_together=(['domain', 'ipv4']),
+        required_together=(["domain", "ipv4"]),
     )
 
     if not HAS_DNS_LEXICON_DEPENDENCY:
-        msg = missing_required_lib('lexicon')
+        msg = missing_required_lib("lexicon")
         module.fail_json(msg=msg, exception=DNS_LEXICON_IMP_ERR)
 
     domains = retrieve_domain_info(module)
-    existing_domain = module.params['domain'] in [
-        domain['name'] for domain in domains
+    existing_domain = module.params["domain"] in [
+        domain["name"] for domain in domains
     ]
 
-    if module.params['state'] == 'present':
+    if module.params["state"] == "present":
         if existing_domain:
             module.exit_json(changed=False)
         create_domain(module)
         module.exit_json(changed=True)
 
-    if module.params['state'] == 'absent':
+    if module.params["state"] == "absent":
         if not existing_domain:
             module.exit_json(changed=False)
         delete_domain(module)

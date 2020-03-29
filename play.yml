@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Create foobar.autonomic.zone
+      gandi_dns:
+        domain: foobar.autonomic.zone
+        ipv4: 94.130.105.60
+        state: absent
