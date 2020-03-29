@@ -70,18 +70,19 @@ def error_msg(domain):
     ).format(domain=domain)
 
 
-def get_env():
+def get_env(module):
     """Build environment for running command-line commands."""
     env = os.environ.copy()
     env["PROVIDER"] = "gandi"
     env["LEXICON_GANDI_API_PROTOCOL"] = "rest"
+    env["LEXICON_GANDI_AUTH_TOKEN"] = module.params["gandi_rest_token"]
     return env
 
 
 def retrieve_domain_info(module):
     """Retrieve all information about a specific domain."""
     domain = module.params["domain"]
-    env = get_env()
+    env = get_env(module)
 
     try:
         return json.loads(
@@ -98,7 +99,7 @@ def create_domain(module):
     """Create a new DNS entry."""
     domain = module.params["domain"]
     ipv4 = module.params["ipv4"]
-    env = get_env()
+    env = get_env(module)
 
     try:
         return json.loads(
@@ -127,7 +128,7 @@ def delete_domain(module):
     """Delete an existing DNS entry."""
     domain = module.params["domain"]
     ipv4 = module.params["ipv4"]
-    env = get_env()
+    env = get_env(module)
 
     try:
         return json.loads(
