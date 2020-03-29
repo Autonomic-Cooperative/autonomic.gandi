@@ -12,6 +12,18 @@ Ansible libraries for managing Gandi resources.
   gather_facts: false
   connection: local
   tasks:
+    - name: Prepare Python dependencies
+      become: true
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install dns-lexicon system wide
+      become: true
+      pip:
+        name: dns-lexicon==3.3.19
+        executable: /usr/bin/pip3
+
     - name: Create foobar.autonomic.zone
       gandi_dns:
         gandi_rest_token: abc...
@@ -32,16 +44,10 @@ Ansible libraries for managing Gandi resources.
 - [dns-lexicon >= 3.3.19](https://pypi.org/project/dns-lexicon/) (if using `gandi_dns` module)
 
 ```bash
-$ pip install ansible==2.6.9 "dns-lexicon[gandi]==3.3.19"
+$ pip install ansible==2.6.9 dns-lexicon==3.3.19
 ```
 
 These should be present on the localhost where you run Ansible.
-
-You can also get `dns-lexicon` via `apt`.
-
-```bash
-$ apt install -y python3-lexicon
-```
 
 ## Gandi DNS Setup
 
