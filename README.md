@@ -55,7 +55,8 @@ $ lexicon gandi list autonomic.zone A
 
 The `gandi_dns` module will provide the `PROVIDER` and
 `LEXICON_GANDI_API_PROTOCOL` environment variables internally so you only need
-to pass `LEXICON_GANDI_AUTH_TOKEN` to the task or expose it in the environment.
+to pass `LEXICON_GANDI_AUTH_TOKEN` as the `gandi_rest_token` argument to the
+task or expose it in the environment and it will be picked up.
 
 ## Usage
 
