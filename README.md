@@ -21,8 +21,11 @@ Ansible libraries for managing Gandi resources.
     - name: Install dns-lexicon system wide
       become: true
       pip:
-        name: dns-lexicon==3.3.19
+        name: "{{ item }}"
         executable: /usr/bin/pip3
+      with_items:
+        - dns-lexicon==3.3.19
+        - cryptography==2.8
 
     - name: Create foobar.autonomic.zone
       gandi_dns:
