@@ -1,0 +1,13 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: autonomic
+  description: Ansible libraries for managing Gandi resources.
+  company: Autonomic
+  license: GPLv
+  min_ansible_version: 2.9.6
+  platforms:
+    - name: Debian
+      versions:
+        - buster
