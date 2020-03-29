@@ -5,11 +5,7 @@ import os
 import traceback
 from subprocess import CalledProcessError, check_output
 
-from ansible.module_utils.basic import (
-    AnsibleModule,
-    env_fallback,
-    missing_required_lib,
-)
+from ansible.module_utils.basic import AnsibleModule, env_fallback
 
 DOCUMENTATION = """
 ---
@@ -177,7 +173,11 @@ def main():
     )
 
     if not HAS_DNS_LEXICON_DEPENDENCY:
-        msg = missing_required_lib("lexicon")
+        msg = (
+            "Missing dns-lexicon, please run apt "
+            "install -y python3-lexicon or install it "
+            " using the Ansible `apt` module."
+        )
         module.fail_json(msg=msg, exception=DNS_LEXICON_IMP_ERR)
 
     domains = retrieve_domain_info(module)

@@ -37,6 +37,12 @@ $ pip install ansible==2.6.9 "dns-lexicon[gandi]==3.3.19"
 
 These should be present on the localhost where you run Ansible.
 
+You can also get `dns-lexicon` via `apt`.
+
+```bash
+$ apt install -y python3-lexicon
+```
+
 ## Gandi DNS Setup
 
 If you want to use the `gandi_dns` module you need to prepare the environment.
@@ -63,7 +69,7 @@ task or expose it in the environment and it will be picked up.
 Include an entry in your `requirements.yml` like so.
 
 ```yaml
-- src: https://git.autonomic.zone/autonomic-cooperative/autonomic.gandi/archive/0.0.3.tar.gz
+- src: https://git.autonomic.zone/autonomic-cooperative/autonomic.gandi/archive/0.0.4.tar.gz
   name: autonomic.gandi
 ```
 
