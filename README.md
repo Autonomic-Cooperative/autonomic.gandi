@@ -64,7 +64,7 @@ Include an entry in your `requirements.yml` like so.
 
 ```yaml
 - src: https://git.autonomic.zone/autonomic-cooperative/autonomic.gandi
-  version: 0.0.1
+  version: 0.0.2
   name: autonomic.gandi
 ```
 
