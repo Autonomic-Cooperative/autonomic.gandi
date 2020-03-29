@@ -53,6 +53,10 @@ You can test that everything is working by running the following.
 $ lexicon gandi list autonomic.zone A
 ```
 
+The `gandi_dns` module will provide the `PROVIDER` and
+`LEXICON_GANDI_API_PROTOCOL` so you only need to pass
+`LEXICON_GANDI_AUTH_TOKEN` to the task or expose it in the environment.
+
 ## Usage
 
 Include an entry in your `requirements.yml` like so.
