@@ -63,8 +63,7 @@ task or expose it in the environment and it will be picked up.
 Include an entry in your `requirements.yml` like so.
 
 ```yaml
-- src: https://git.autonomic.zone/autonomic-cooperative/autonomic.gandi
-  version: 0.0.3
+- src: https://git.autonomic.zone/autonomic-cooperative/autonomic.gandi/archive/0.0.3.tar.gz
   name: autonomic.gandi
 ```
 
