@@ -85,3 +85,10 @@ Include an entry in your `requirements.yml` like so.
 See the [releases](https://git.autonomic.zone/autonomic-cooperative/autonomic.gandi/releases) for which is the latest version.
 
 Then make sure to download the role with `ansible-galaxy install -r requirements.yml`.
+
+Note, we also keep a mirror on [git.coop](https://git.coop) for when we run internal Gitea upgrades.
+
+```
+- src: https://git.coop/decentral1se/autonomic.gandi/-/archive/0.0.5/autonomic.gandi-0.0.5.tar.gz
+  name: autonomic.gandi
+```
